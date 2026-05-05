@@ -1,0 +1,21 @@
+flask==3.1.3
+flask-cors==6.0.2
+gunicorn==25.3.0
+#torch==2.10.0+cpu --extra-index-url https://download.pytorch.org/whl/cpu
+#transformers==5.0.0
+sentence-transformers==5.4.0
+chromadb==1.5.8
+numpy==2.0.2
+python-dotenv==1.2.2
+langfuse==4.3.1
+groq==1.2.0
+psutil
+requests
+wheel
+setuptools
+yt-dlp>=2026.3.17
+openai-whisper==20250625
+trafilatura==2.0.0
+pdfplumber==0.11.4
+python-docx==1.1.2
+#indic-transliteration==2.3.57
