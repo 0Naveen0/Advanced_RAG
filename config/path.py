@@ -27,5 +27,6 @@ RAW_DOCS_PATH         = f"{BASE_URL}/data/raw_docs/text"
 
 LOG_PATH                = f"{BASE_URL}/observability/logs/requests.json"
 
-
+PENDING_LOG_PATH    =os.path.join(BASE_URL,"preprocess/logs/pending_translation.json")
+# Path(os.getenv("PENDING_TRANSLATION_PATH", "pending_translation.json"))
 
