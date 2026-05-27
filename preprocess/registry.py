@@ -13,19 +13,32 @@ TranslationState = Literal[
 ]
 
 def _load()->dict:
-    if not os.path.exists(REGISTRY_PATH):
+    if not os.path.exists(REGISTRY_PATH) or os.stat(REGISTRY_PATH).st_size == 0:
         os.makedirs(os.path.dirname(REGISTRY_PATH),exist_ok = True)
         return {}
 
     with open(REGISTRY_PATH,"r",encoding="utf-8") as f:
-        return json.load(f)
-
+        try:
+            data=json.load(f)
+            return data
+        except:
+            return {}
+# // [
+# //   {
+# //     "source_url": "None",
+# //     "source_type": "None",
+# //     "published_at": "None",
+# //     "ingested_at": "None",
+# //     "char_count": "None"
+# //   }
+# // ]
 def _save(registry:dict)->None:
     with open(REGISTRY_PATH,"w",encoding="utf-8") as f:
         json.dump(registry,f,ensure_ascii=False,indent=2)
 
 def _mark_ingested(doc:dict)->None:
     registry=_load()
+    print(f"registry content:{registry}")
     registry[doc["source_id"]]={
       "source_url" : doc["source_url"],
       "source_type":doc["source_type"],
@@ -43,6 +56,7 @@ def get_record(source_id:str)->Optional[dict]:
 
 def set_translation_state(source_id:str,state:TranslationState,*,language:str | None=None,hinglish_detected:bool=False,)->None:
     registry = _load()
+    print(f"[set_translation_state->registry]:{registry}")
     if source_id not in registry:
         raise KeyError(
             f"[registry] source_id:{source_id} not found"
@@ -57,6 +71,8 @@ def set_translation_state(source_id:str,state:TranslationState,*,language:str | 
         registry[source_id]["hinglish_detected"] = True
 
     _save(registry)
+    print(f"[set_translation_state->language]:{language}")
+    print(f"[set_translation_state->state]:{state}")
     logger.info("Registry: source_id %s -> %s",source_id,state)
 
 

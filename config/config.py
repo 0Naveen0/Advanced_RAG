@@ -40,7 +40,7 @@
 # SIMILARITY_THRESHOLD_ACCEPTED = 0.45
 
 # GAP                    =0.05   #0.02
-# MAX_CONTEXT_TOKENS	   = 1500	
+MAX_CONTEXT_TOKENS	   = 1500	
 # MAX_NEW_TOKENS 		     = 350
 
 # DO_SAMPLE			         = False
@@ -50,12 +50,12 @@
 # GUARD_ACTIVE          = True
 # CHUNK_SIZE            = 400
 # CHUNK_OVERLAP         = 50
-# MAX_ALLOWED_CHUNKS    = 2
+MAX_ALLOWED_CHUNKS    = 2
 # # RAW_DOCS_PATH         = "/content/drive/MyDrive/ColabNotebooks/EKA_RAG_Project/data/raw_docs/text"
 # RAW_DOCS_PATH         = f"{BASE_URL}/data/raw_docs/text"
 # # RAW_DOCS_PATH         = "/data/raw_docs/text"
 # # RAW_DOCS_PATH         = "/content/drive/MyDrive/Colab Notebooks/rag-docs"
-# REFUSAL_MESSAGE = "I do not have sufficient information in the knowledge base to answer this question."
+REFUSAL_MESSAGE = "I do not have sufficient information in the knowledge base to answer this question."
 # MAX_TOTAL_LATENCY = 45.0
 # MAX_GENERATION_LATENCY = 30.0
 # # LOG_PATH                = "/content/drive/MyDrive/ColabNotebooks/EKA_RAG_Project_v2/observability/logs/requests.json"

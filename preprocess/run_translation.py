@@ -3,11 +3,11 @@ import os
 from dataclasses import dataclass,field
 from typing import Optional
 from config.path import DOCS_PATH
-from preprocess.persistance import load_doc,save_docs
+from preprocess.persistence import load_doc,save_docs
 from preprocess.registry import (is_translation_complete,list_pending_translation,set_translation_state)
 from preprocess.language_processor import process_document
 
-logger = logging.getLogger(__nama__)
+logger = logging.getLogger(__name__)
 
 
 
@@ -72,18 +72,34 @@ def _process_one(source_id: str, summary: TranslationRunSummary) -> None:
         return
 
     meta = enriched.get("metadata",{})
-    set_translation_state(source_id,"Translation Complete",)
-    hinglish_detected=meta.get("hinglish_detected",False)
+    set_translation_state(
+        source_id,"Translation Complete",
+        language=meta.get("language"),
+        hinglish_detected=meta.get("hinglish_detected",False),
+        )
     summary.succeeded+=1
     logger.info("source_id=%s | Translation Complete.",source_id)
 
 
 
 def run_translation_one(source_id:str)->Optional[dict]:
-    pass
+    summary = TranslationRunSummary()
+    _process_one(source_id,summary)
+    if summary.succeeded==1:
+        return load_doc(source_id)
+    return None
 
 def run_translation() -> TranslationRunSummary:
-    pass
+    logger.info("Translation run starting.......")
+    all_ids = _list_all_source_ids()
+    logger.info("Corpus size: %d documents found on disk",len(all_ids))
+    pending_ids = list_pending_translation(all_ids)
+    logger.info("Pending Translation:%d|Complete:%d",len(pending_ids),len(all_ids)-len(pending_ids))
+    summary = TranslationRunSummary()
+    for source_id in pending_ids:
+        _process_one(source_id,summary)
+    summary.log()
+    return summary
 
 if __name__ == "__main__":
     logging.basicConfig(level= logging.INFO,format="%(asctime)s | %(levelname)s | (%name)s | %(message)s,")

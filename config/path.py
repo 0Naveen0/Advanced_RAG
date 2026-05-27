@@ -6,6 +6,8 @@ BASE_URL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPO_DB = os.path.join(BASE_URL,"db/chroma_db")
 RUNTIME_DB = "/tmp/chroma_db"
 AUDIO_VIDEO_DOWNLOADS = os.path.join(BASE_URL,"data/downloads/audio_video")
+AUDIO_VIDEO_LOCAL = os.path.join(BASE_URL,"data/local_audio_video")
+
 REGISTRY_PATH = os.path.join(BASE_URL,"data/registry/ingestion_registry.json")
 DOCS_PATH = os.path.join(BASE_URL,"data/ingested")
 if not os.path.exists(RUNTIME_DB):

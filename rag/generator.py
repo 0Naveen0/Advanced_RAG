@@ -1,6 +1,9 @@
 from config.config import MAX_CONTEXT_TOKENS,MAX_ALLOWED_CHUNKS,REFUSAL_MESSAGE
 from config.config import GROQ_MODEL,MAX_RETRIES,BACKOFF_BASE
-from model.groq_model import call_groq_translate
+# from models.groq_model import call_groq_translate
+from models.groq_model import GroqGenerator
+gg = GroqGenerator()
+
 import logging
 import time
 
@@ -86,11 +89,11 @@ class Generator:
         print(f"Answer -> {answer}")
         return answer
 
-    def translate_with_retry(text:str)->tuple[str,str |None]:
+    def translate_with_retry(self,text:str)->tuple[str,str |None]:
         last_error:str = "Unknown error"
         for attempt in range(1,MAX_RETRIES+1):
             try:
-                translated = call_groq_translate(text)
+                translated = gg.call_groq_translate(text)
                 return translated,None
             except Exception as e:
                 last_error = str(e)
