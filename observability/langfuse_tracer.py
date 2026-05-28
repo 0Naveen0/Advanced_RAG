@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from typing import Any
 import logging
+from config.constants import REDUCTION_WARNING_THRESHOLD
 
 logger = logging.getLogger(__name__)
 class LangfuseTracer:
@@ -81,3 +82,29 @@ class LangfuseTracer:
             except Exception as e:
                 logger.warning("langfus trace failed:%s",e)
                 print(f"Flush error:{e}")
+
+    @staticmethod
+    def lanfuse_trace_cleaning(source_id,source_type,char_before,char_after,reduction_ratio)->None:
+        client = LangfuseTracer.get_client()
+        if (client is None) or (not client.auth_check()):
+          print(f"[Langfuse]Authentication Error-Flush not completed.")
+          return
+        with client.start_as_current_observation(as_type="span",name="adv_rag_cleaning",input={"source_id":source_id},) as trace:
+            trace.update(
+    	      output={"cleaning",success},
+    	      metadata ={
+    			  		"source_id":source_id,
+    			  		"source_type":source_type,
+    			  		"char_before":char_before,
+    			  		"char_after":char_after,
+    			  		"reduction_ratio":round(reduction_ratio,4),
+    			  		"reduction_warning":reduction_ratio>REDUCTION_WARNING_THRESHOLD,					
+    			  	   },
+    			  	)    					 
+        try:
+          client.flush()
+          logger.debug("Langfuse Trace emitted phase cleaning source_id = %s",source_id)
+        except Exception as e:
+          logger.warning("Langfuse Trace for Phase Cleaning failed:%s",e)
+          print(f"[Cleaning]Flush Error:{e}")
+    
