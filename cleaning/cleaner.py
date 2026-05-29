@@ -11,7 +11,7 @@ _HTML_ENTITIES = re.compile(r"&[a-zA-Z]{2,10};|&#\d{1,6};")
 _EXCESSIVE_PUNCTUATION = re.compile(r"([.!?,\-_=*#])\1{3,}")
 _MULTIPLE_BLANK_LINES=re.compile(r"\n{3,}")
 _TRAILING_WHITESPACE = re.compile(r"[\t]+$",re.MULTILINE)
-_LEADING_WHITESPACE = re.compile(r"^[\t]+,re.MULTILINE")
+_LEADING_WHITESPACE = re.compile(r"^[\t]+",re.MULTILINE)
 _ZERO_WIDTH = re.compile(r"[\u200B-\u200F\u202A-\u202E\uFEFF\uFFFD]")
 
 def clean_base(text:str)->str:

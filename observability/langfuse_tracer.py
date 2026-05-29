@@ -91,7 +91,7 @@ class LangfuseTracer:
           return
         with client.start_as_current_observation(as_type="span",name="adv_rag_cleaning",input={"source_id":source_id},) as trace:
             trace.update(
-    	      output={"cleaning",success},
+    	      output={"cleaning":"success"},
     	      metadata ={
     			  		"source_id":source_id,
     			  		"source_type":source_type,
